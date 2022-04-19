@@ -1,0 +1,59 @@
+body{
+    margin: 0;
+    --primary-color: #ef5742
+}
+
+.obj{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    margin: 20px;
+    padding: 20px;
+    background-color: var(--primary-color);
+    color:white;
+    border-radius: 20px;
+}
+
+.key{
+    min-width: 200px;
+    cursor: pointer;
+    transition: 0.1s;
+    background-color: var(--primary-color);
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.key:hover{
+    filter: brightness(1.5);
+}
+
+.value{
+    margin-left: 10px;
+    padding: 5px;
+    outline: none;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.wrapper{
+    display: flex;
+    border-bottom: 1px solid white;
+    padding: 5px;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+.value:not([contenteditable="true"]){
+    cursor: default;
+}
+
+.value:not([contenteditable="true"])::after{
+    content: "not editable";
+    margin-left: 20px;
+    color: white;
+    font-style: italic;
+    font-size: small;
+}

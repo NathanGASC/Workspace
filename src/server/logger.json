@@ -1,0 +1,17 @@
+{
+    "options": {
+        "format": "[{{h}}:{{m}}:{{s}}] {{namespace}} :",
+        "isLogged": {
+            "debug": true,
+            "log": true,
+            "error": true,
+            "warn": true,
+            "info": true
+        }
+    },
+    "namespaces": {
+        "default": {
+            "isLogged": true
+        }
+    }
+}
