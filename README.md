@@ -2,7 +2,8 @@
 A basic setup to create Server & Client in typescript. The setup can handle back-end writed in something else than nodejs.
 
 ## Scripts
-Here some usefull scripts
+Here some usefull scripts:
+```js
 - "build:ops:before": "node ./ops/before.js", //Will execute before.js which is code which must be executed before compilation
 - "build:typescript": "node ./ops/typescript.js", //Will execute typescript.js which will compile typescript files
 - "build:browserify": "browserify ./dist/client/index.js -t [ partialify --alsoAllow html --alsoAllow css --alsoAllow txt --alsoAllow md ] -t imgurify -o ./dist/client/index.js", //Browserify will transform compiled typescript files in js file which are understandable for the navigator
@@ -19,7 +20,7 @@ Here some usefull scripts
 - "start": "node ./ops/start.js", //start the nodejs server
 - "seed": "ts-node ./src/server/prisma/seed.ts", //seed the database
 - "seed:big": "ts-node ./src/server/prisma/seed.ts -- -l 100" //run the seed script 100x
-
+```
 So if you want to test the setup, do:
 ```bash
 npm run build:watch
