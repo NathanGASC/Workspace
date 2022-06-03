@@ -21,4 +21,9 @@ jobs:
         path: '~/.npm'
     - run: npm ci
     - run: npm run build
-    - run: npm run pipeline:release:github -- -a ${{ secrets.AUTH }} -o ${{secrets.OWNER}} -r ${{secrets.REPO}}
+    - run: npm run pipeline:release:github
+      env: 
+        AUTH: ${{ secrets.AUTH }}
+        OWNER: ${{ secrets.OWNER }}
+        REPO: ${{ secrets.REPO }}
+    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
