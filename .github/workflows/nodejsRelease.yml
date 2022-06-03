@@ -26,4 +26,3 @@ jobs:
         AUTH: ${{ secrets.AUTH }}
         OWNER: ${{ secrets.OWNER }}
         REPO: ${{ secrets.REPO }}
-    NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
