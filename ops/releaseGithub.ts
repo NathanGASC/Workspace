@@ -7,7 +7,7 @@ args.auth = process.env.AUTH
 args.owner = process.env.OWNER
 args.repo = process.env.REPO
 
-console.log("arguments:", args, process.env);
+console.log("arguments:", args);
 
 var start = async () => {
     const pkgFile = fs.readFileSync("./package.json", "utf-8");
@@ -19,8 +19,6 @@ var start = async () => {
 
     console.log(`Generate release for ${name}:${version}`);
 
-    // Octokit.js
-    // https://github.com/octokit/core.js#readme
     const octokit = new Octokit({
         auth: args.auth
     })
