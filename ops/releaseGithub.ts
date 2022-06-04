@@ -27,15 +27,15 @@ var start = async () => {
 
     console.log("Query github for release")
     try {
-        const res = octokit.request('POST /repos/' + args.owner + '/' + args.repo + '/releases', {
+        const res = octokit.rest.repos.createRelease({
             owner: args.owner,
             repo: args.repo,
             tag_name: "v" + version,
-            path: dist
+            draft: true,
         })
 
         res.then((res) => {
-            console.log("request status:" + res.status)
+            res.data.id
         })
     } catch (e) {
         console.error("Github returned an error on query")
