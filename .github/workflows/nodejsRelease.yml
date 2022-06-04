@@ -9,23 +9,12 @@ env:
   OWNER: ${{ secrets.OWNER }}
   REPO: ${{ secrets.REPO }}
 
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        path: '~/.npm'
-    - run: npm ci
-    - run: npm run build
-    - run: npm run pipeline:release:github
+- name: Upload To Github Release
+  uses: xresloader/upload-to-github-release@v1.3.4
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  with:
+    delete_file: "**"
+    delete_file: "dist/**"
+    tags: true
+    draft: true
