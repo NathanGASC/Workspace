@@ -9,20 +9,21 @@ jobs:
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build project # This would actually build your project, using zip for an example artifact
+      - name: Get version
+        id: version
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Build project
         run: |
           npm ci
           npm run build
-          zip -r ${{ github.ref_name }} dist
+          zip -r ${{ github.ref_name }}.${{ steps.version.outputs.date }} dist
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
+          tag_name: ${{ github. }}
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
@@ -33,6 +34,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ github.ref_name }}
-          asset_name: ${{ github.ref_name }}
+          asset_path: ./${{ github.ref_name }}.${{ steps.version.outputs.date }}.zip
+          asset_name: ${{ github.ref_name }}.${{ steps.version.outputs.date }}.zip
           asset_content_type: application/zip
