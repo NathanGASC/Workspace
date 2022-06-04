@@ -16,7 +16,8 @@ console.log("Delete all, except dist folder")
 const all = path.resolve(__dirname, "./../**")
 const dist = path.resolve(__dirname, "./../dist")
 const base = path.resolve(__dirname, "./../")
-del.sync([all, `!${dist}`]);
+const nodeModules = path.resolve(__dirname, "./../node_modules")
+del.sync([all, `!${dist}`, `!${nodeModules}`]);
 console.log("Delete done")
 
 console.log("Copy dist content in base directory")
@@ -28,6 +29,7 @@ copy(dist, base, function (err, files) {
 });
 
 var start = async () => {
+    del.sync([`${nodeModules}`]);
     const pkgFile = fs.readFileSync("./package.json", "utf-8");
     const versionRaw = /"version": ".*"/.exec(pkgFile)!
     const nameRaw = /"name": ".*"/.exec(pkgFile)!
