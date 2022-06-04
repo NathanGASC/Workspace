@@ -3,6 +3,10 @@ name: Release
 on:
   push:
     # Sequence of patterns matched against refs/tags
+    branches:
+      - main
+    tags:
+      - v*.*.*
 
 jobs:
   build:
@@ -15,6 +19,7 @@ jobs:
         id: version
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Build project
+        # TODO: Find a way to handle multiple type of back-end to do the right build process
         run: |
           npm i
           npm run build
