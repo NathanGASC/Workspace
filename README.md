@@ -38,3 +38,7 @@ DATABASE_URL=file:./databases/dev.sqlite
 #Boolean which tell if back-end should be compiled from typescript to js or if it's must be copied. (You want to copy if you use another language for the back-end)
 COPY_SERVER=TRUE
 ```
+
+## Pipeline
+### Release
+Will build your project and create a release each time you push on release branch. The release name will be : "release YYYY-MM-DD"
