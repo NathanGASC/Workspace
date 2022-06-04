@@ -1,9 +1,7 @@
 import { Octokit } from "octokit";
 import fs from "fs"
 require('dotenv').config();
-import del from 'del';
 import path from "path";
-import copy from "copy"
 
 const args: any = {}
 args.auth = process.env.AUTH
@@ -11,25 +9,9 @@ args.owner = process.env.OWNER
 args.repo = process.env.REPO
 
 console.log("check arguments:", args);
-
-console.log("Delete all, except dist folder")
-const all = path.resolve(__dirname, "./../**")
 const dist = path.resolve(__dirname, "./../dist")
-const base = path.resolve(__dirname, "./../")
-const nodeModules = path.resolve(__dirname, "./../node_modules")
-del.sync([all, `!${dist}`, `!${nodeModules}`]);
-console.log("Delete done")
-
-console.log("Copy dist content in base directory")
-copy(dist, base, function (err, files) {
-    if (err) throw err;
-    console.log("Copy done")
-
-    start();
-});
 
 var start = async () => {
-    del.sync([`${nodeModules}`]);
     const pkgFile = fs.readFileSync("./package.json", "utf-8");
     const versionRaw = /"version": ".*"/.exec(pkgFile)!
     const nameRaw = /"name": ".*"/.exec(pkgFile)!
@@ -49,6 +31,7 @@ var start = async () => {
             owner: args.owner,
             repo: args.repo,
             tag_name: "v" + version,
+            path: dist
         })
 
         res.then((res) => {
@@ -58,7 +41,6 @@ var start = async () => {
         console.error("Github returned an error on query")
         console.error(e);
     }
-
-
-
 };
+
+start();
