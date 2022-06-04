@@ -2,7 +2,12 @@ name: Release NodeJS
 
 on:
   push:
-    branches: main
+    branches: [main]
+
+env: 
+  AUTH: ${{ secrets.AUTH }}
+  OWNER: ${{ secrets.OWNER }}
+  REPO: ${{ secrets.REPO }}
 
 jobs:
   build:
@@ -23,8 +28,4 @@ jobs:
         path: '~/.npm'
     - run: npm ci
     - run: npm run build
-    - env: 
-        AUTH: ${{ secrets.AUTH }}
-        OWNER: ${{ secrets.OWNER }}
-        REPO: ${{ secrets.REPO }}
-      run: npm run pipeline:release:github
+    - run: npm run pipeline:release:github
