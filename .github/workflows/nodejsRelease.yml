@@ -1,7 +1,25 @@
-uses: xresloader/upload-to-github-release@v1
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-with:
-  file: "*.md"
-  tags: true
-  draft: true
+name: Release NodeJS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: xresloader/upload-to-github-release@v1.3.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          delete_file: "**"
+          delete_file: "./dist"
+          tags: true
+          draft: true
