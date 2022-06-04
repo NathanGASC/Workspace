@@ -4,12 +4,11 @@ on:
   push:
     branches: [main]
 
-- name: Upload To Github Release
-  uses: xresloader/upload-to-github-release@v1.3.4
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  with:
-    delete_file: "**"
-    delete_file: "dist/**"
-    tags: true
-    draft: true
+uses: xresloader/upload-to-github-release@v1.3.4
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+with:
+  delete_file: "**"
+  delete_file: "dist/**"
+  tags: true
+  draft: true
