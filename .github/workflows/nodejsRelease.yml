@@ -4,11 +4,6 @@ on:
   push:
     branches: [main]
 
-env: 
-  AUTH: ${{ secrets.AUTH }}
-  OWNER: ${{ secrets.OWNER }}
-  REPO: ${{ secrets.REPO }}
-
 - name: Upload To Github Release
   uses: xresloader/upload-to-github-release@v1.3.4
   env:
