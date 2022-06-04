@@ -16,15 +16,14 @@ on:
 permissions:
   contents: read
 
-strategy:
-  matrix:
-    node-version: [12.x]
-    # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-runs-on: ubuntu-latest
 
 jobs:
   node_build:
+    runs-on: ubuntu-latest
+    strategy:
+    matrix:
+      node-version: [12.x]
+      # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -35,6 +34,7 @@ jobs:
       - run: npm ci
       - run: npm run build
   update_release_draft:
+    runs-on: ubuntu-latest
     permissions:
       contents: write  # for release-drafter/release-drafter to create a github release
       pull-requests: write  # for release-drafter/release-drafter to add label to PR
