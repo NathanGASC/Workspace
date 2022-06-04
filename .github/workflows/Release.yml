@@ -15,7 +15,7 @@ jobs:
         run: |
           npm ci
           npm run build
-          zip --junk-paths ${{ github.ref_name }} dist
+          zip -r ${{ github.ref_name }} dist
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
