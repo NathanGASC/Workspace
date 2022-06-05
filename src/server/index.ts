@@ -2,11 +2,8 @@ import { apiRouter } from './api';
 import { createLogger } from '@nathangasc/fox_logger';
 import express from 'express';
 import loggerConf from "./logger.json"
-import { PrismaClient } from '@prisma/client';
 import dotenv from "dotenv";
 dotenv.config();
-
-const prisma = new PrismaClient();
 
 const logger = createLogger(loggerConf)
 
