@@ -3,8 +3,11 @@ var copy = require('recursive-copy');
 const del = require('del');
 require('dotenv').config();
 
-del.sync([path.resolve(__dirname, "./../dist/client")]);
-del.sync([path.resolve(__dirname, "./../dist/server")]);
+if (process.env.COPY_SERVER == "TRUE") {
+    del.sync([path.resolve(__dirname, "./../dist/client")]);
+} else {
+    del.sync([path.resolve(__dirname, "./../dist")]);
+}
 
 copy(path.resolve(__dirname, "./../src/client/views"), path.resolve(__dirname, "./../dist/client/views"), function (error, results) { });
 copy(path.resolve(__dirname, "./../src/client/assets"), path.resolve(__dirname, "./../dist/client/assets"), function (error, results) { });
