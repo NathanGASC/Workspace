@@ -37,6 +37,9 @@ DATABASE_URL=file:./databases/dev.sqlite
 
 #Boolean which tell if back-end should be compiled from typescript to js or if it's must be copied. (You want to copy if you use another language for the back-end)
 COPY_SERVER=TRUE
+
+#Set the environnement you want to compile for. Can be dev or prod. In prod, code will be ulgify.
+ENV=prod
 ```
 
 ## Pipeline
