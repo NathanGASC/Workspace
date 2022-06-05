@@ -40,5 +40,4 @@ COPY_SERVER=TRUE
 ```
 
 ## Pipeline
-### Release
-Will build your project and create a release each time you push on release branch. The release name will be : "release YYYY-MM-DD"
+- Release : Will build your project and create a release each time you push on release branch. The release name will be : "release YYYY-MM-DD"
