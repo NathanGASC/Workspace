@@ -22,8 +22,7 @@
     "build:prod": "npm run build && npm run build:uglify",
     "start": "node ./ops/start.js",
     "seed": "ts-node ./src/server/prisma/seed.ts",
-    "seed:big": "ts-node ./src/server/prisma/seed.ts -- -l 100",
-    "pipeline:release:github": "ts-node ./ops/releaseGithub.ts"
+    "seed:big": "ts-node ./src/server/prisma/seed.ts -- -l 100"
   },
   "author": "Nathan GASC",
   "license": "ISC",
