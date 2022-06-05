@@ -9,20 +9,33 @@ if (process.env.COPY_SERVER == "TRUE") {
     del.sync([path.resolve(__dirname, "./../dist")]);
 }
 
-copy(path.resolve(__dirname, "./../src/client/views"), path.resolve(__dirname, "./../dist/client/views"), function (error: any, results: any) { });
-copy(path.resolve(__dirname, "./../src/client/assets"), path.resolve(__dirname, "./../dist/client/assets"), function (error: any, results: any) { });
-copy(path.resolve(__dirname, "./../src/client/css"), path.resolve(__dirname, "./../dist/client/css"), function (error: any, results: any) { });
+copyClientFiles("default");
 
-copy(path.resolve(__dirname, "./../src/client/components/views"), path.resolve(__dirname, "./../dist/client/components/views"), function (error: any, results: any) { });
-copy(path.resolve(__dirname, "./../src/client/components/assets"), path.resolve(__dirname, "./../dist/client/components/assets"), function (error: any, results: any) { });
-copy(path.resolve(__dirname, "./../src/client/components/css"), path.resolve(__dirname, "./../dist/client/components/css"), function (error: any, results: any) { });
+if (process.env.CLIENT) {
+    copyClientFiles(process.env.CLIENT);
+}
 
-copy(path.resolve(__dirname, "./../src/client/index.html"), path.resolve(__dirname, "./../dist/client/index.html"), function (error: any, results: any) { });
-copy(path.resolve(__dirname, "./../src/client/index.css"), path.resolve(__dirname, "./../dist/client/index.css"), function (error: any, results: any) { });
-
-copy(path.resolve(__dirname, "./../src/server/entities/ressources/index.html"), path.resolve(__dirname, "./../dist/client/ui/index.html"), function (error: any, results: any) { });
-copy(path.resolve(__dirname, "./../src/server/entities/ressources/index.css"), path.resolve(__dirname, "./../dist/client/ui/index.css"), function (error: any, results: any) { });
+copy(path.resolve(__dirname, "./../src/server/entities/ressources/index.html"), path.resolve(__dirname, "./../dist/client/ui/index.html"), { overwrite: true });
+copy(path.resolve(__dirname, "./../src/server/entities/ressources/index.css"), path.resolve(__dirname, "./../dist/client/ui/index.css"), { overwrite: true });
 
 if (process.env.COPY_SERVER == "TRUE") {
-    copy(path.resolve(__dirname, "./../src/server/"), path.resolve(__dirname, "./../dist/server/"), function (error: any, results: any) { });
+    copy(path.resolve(__dirname, "./../src/server/"), path.resolve(__dirname, "./../dist/server/"), { overwrite: true });
+}
+
+async function copyClientFiles(client: string) {
+    try {
+        await copy(path.resolve(__dirname, `./../src/client/${client}/views`), path.resolve(__dirname, "./../dist/client/views"), { overwrite: true });
+        await copy(path.resolve(__dirname, `./../src/client/${client}/assets`), path.resolve(__dirname, "./../dist/client/assets"), { overwrite: true });
+        await copy(path.resolve(__dirname, `./../src/client/${client}/css`), path.resolve(__dirname, "./../dist/client/css"), { overwrite: true });
+
+        await copy(path.resolve(__dirname, `./../src/client/${client}/components/views`), path.resolve(__dirname, "./../dist/client/components/views"), { overwrite: true });
+        await copy(path.resolve(__dirname, `./../src/client/${client}/components/assets`), path.resolve(__dirname, "./../dist/client/components/assets"), { overwrite: true });
+        await copy(path.resolve(__dirname, `./../src/client/${client}/components/css`), path.resolve(__dirname, "./../dist/client/components/css"), { overwrite: true });
+
+        await copy(path.resolve(__dirname, `./../src/client/${client}/index.html`), path.resolve(__dirname, "./../dist/client/index.html"), { overwrite: true });
+        await copy(path.resolve(__dirname, `./../src/client/${client}/index.css`), path.resolve(__dirname, "./../dist/client/index.css"), { overwrite: true });
+    } catch (e) {
+
+    }
+
 }

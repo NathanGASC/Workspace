@@ -3,7 +3,7 @@ require('dotenv').config();
 
 execSync("cd ..");
 if (process.env.COPY_SERVER != "TRUE") {
-    execSync("tsc -p ./src/client/ && tsc -p ./src/server/");
+    execSync("tsc -p ./src/client/default/ && tsc -p ./src/server/");
 } else {
-    execSync("tsc -p ./src/client/");
+    execSync("tsc -p ./src/client/default/");
 }
