@@ -27,11 +27,10 @@ require('dotenv').config();
 async function copyClientFiles(client: string) {
 
     Promise.all([
-        copy(path.resolve(__dirname, `./../src/client/${client}/views`), path.resolve(__dirname, "./../dist/client/views"), { overwrite: true }),
         copy(path.resolve(__dirname, `./../src/client/${client}/assets`), path.resolve(__dirname, "./../dist/client/assets"), { overwrite: true }),
-        copy(path.resolve(__dirname, `./../src/client/${client}/css`), path.resolve(__dirname, "./../dist/client/css"), { overwrite: true }),
 
         copy(path.resolve(__dirname, `./../src/client/${client}/components/custom/assets`), path.resolve(__dirname, "./../dist/client/components/custom/assets"), { overwrite: true }),
+        copy(path.resolve(__dirname, `./../src/client/${client}/components/workspace/assets`), path.resolve(__dirname, "./../dist/client/components/workspace/assets"), { overwrite: true }),
 
         copy(path.resolve(__dirname, `./../src/client/${client}/index.html`), path.resolve(__dirname, "./../dist/client/index.html"), { overwrite: true }),
         copy(path.resolve(__dirname, `./../src/client/${client}/index.css`), path.resolve(__dirname, "./../dist/client/index.css"), { overwrite: true }),

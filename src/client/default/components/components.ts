@@ -1,8 +1,8 @@
-import { WordCounter } from './custom/wordCounter';
-export class Components {
+import { WordCounter } from './workspace/wordCounter';
 
-}
-
+const debug = true;
 export function componentsInit() {
-    WordCounter.init();
+    return{
+        WordCounter : WordCounter.init(debug)
+    }
 }

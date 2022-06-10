@@ -3,9 +3,20 @@ import { strToHtml } from '../../helpers/DOM';
 import view from "./assets/wordCounter/index.html";
 import css from "./assets/wordCounter/index.css";
 
+/**
+ * WordCounter : www-word-counter
+ * 
+ * observedAttributes:
+ * - selector: css selector which is counted by the counter
+ * - css-link: an url to a css file which will be added to the component to update his style
+ */
 export class WordCounter extends HTMLElement {
-    static init() {
+    static init(debug:boolean) {
         window.customElements.define('www-word-counter', WordCounter);
+        if(debug){
+            console.log("init:www-word-counter")
+        }
+        return WordCounter;
     }
 
     static get observedAttributes() { return ['selector', 'css-link']; }
@@ -29,10 +40,14 @@ export class WordCounter extends HTMLElement {
 
     onSelector(oldValue: any, newValue: any) {
         if (typeof newValue != "string") throw new TypeError()
+        this.observedElement?.removeEventListener("DOMSubtreeModified", this.updateView.bind(this))
+
         const observedElement = document.querySelector(newValue) as HTMLElement | null;
         if (!observedElement) throw new Error("DOM Error")
         this.observedElement = observedElement;
         this.updateView();
+
+        this.observedElement.addEventListener("DOMSubtreeModified", this.updateView.bind(this))
     }
 
     onCsslink(oldValue: any, newValue: any) {
