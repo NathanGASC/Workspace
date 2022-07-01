@@ -2,57 +2,51 @@ import { capitalizeFirstLetter } from '../../helpers/any';
 import { strToHtml } from '../../helpers/DOM';
 import view from "./assets/wordCounter/index.html";
 import css from "./assets/wordCounter/index.css";
+import { Component } from '../tools';
 
 /**
- * WordCounter : www-word-counter
- * 
+ * WordCounter is used to count words in a HTML element.
  * observedAttributes:
  * - selector: css selector which is counted by the counter
- * - css-link: an url to a css file which will be added to the component to update his style
  */
-export class WordCounter extends HTMLElement {
-    static init(debug:boolean) {
-        window.customElements.define('www-word-counter', WordCounter);
-        if(debug){
-            console.log("init:www-word-counter")
-        }
-        return WordCounter;
-    }
+export class WordCounter extends Component {
+    public static _observedAttributes = ['selector']
 
-    static get observedAttributes() { return ['selector', 'css-link']; }
+    static get observedAttributes() { return this._observedAttributes; }
+    static set observedAttributes(observedAttributes:string[]) { this._observedAttributes = observedAttributes; }
+    static comment: string = `
+    * WordCounter is used to count words in a HTML element.
+    * observedAttributes:
+    * - selector: css selector which is counted by the counter
+    `;
 
     observedElement: HTMLElement | undefined;
-    csslinkElement: HTMLLinkElement | undefined;
 
     constructor() {
-        super();
-        const shadowRoot = this.attachShadow({ mode: 'open' });
-        shadowRoot.innerHTML = view;
-
-        const style = document.createElement("style");
-        style.innerHTML = css;
-        shadowRoot.append(style);
-    }
-
-    attributeChangedCallback(name: string, oldValue: any, newValue: any) {
-        (this as any)["on" + capitalizeFirstLetter(name).replace("-", "")](oldValue, newValue);
+        super(view, css);
     }
 
     onSelector(oldValue: any, newValue: any) {
         if (typeof newValue != "string") throw new TypeError()
         this.observedElement?.removeEventListener("DOMSubtreeModified", this.updateView.bind(this))
 
-        const observedElement = document.querySelector(newValue) as HTMLElement | null;
-        if (!observedElement) throw new Error("DOM Error")
+        let observedElement;
+        try{
+            observedElement = document.querySelector(newValue) as HTMLElement | null;
+            if(!observedElement){
+                this.logger?.error(`The given selector "${newValue}" don't point on an existing element`)
+                return;
+            }
+        }catch(e){
+            this.logger?.error(`The given selector "${newValue}" don't point on an existing element`)
+            throw e;
+        }
+
+        
         this.observedElement = observedElement;
         this.updateView();
 
-        this.observedElement.addEventListener("DOMSubtreeModified", this.updateView.bind(this))
-    }
-
-    onCsslink(oldValue: any, newValue: any) {
-        if (typeof newValue != "string") throw new TypeError()
-        this.setCsslink(newValue)
+        this.observedElement?.addEventListener("DOMSubtreeModified", this.updateView.bind(this))
     }
 
     count() {
@@ -67,13 +61,6 @@ export class WordCounter extends HTMLElement {
             words,
             characters
         }
-    }
-
-    setCsslink(link: string) {
-        const html = `<link rel="stylesheet" href="${link}">`;
-        if (this.csslinkElement) this.csslinkElement.remove();
-        this.csslinkElement = strToHtml(html)[0] as HTMLLinkElement;
-        this.shadowRoot?.prepend(css);
     }
 
     updateView() {
