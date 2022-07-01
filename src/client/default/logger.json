@@ -22,10 +22,7 @@
         "components": {
             "isLogged":true
         },
-        "www-something":{
-            "isLogged":true
-        },
-        "www-something-else":{
+        "www-btn-list": {
             "isLogged":true
         }
     }

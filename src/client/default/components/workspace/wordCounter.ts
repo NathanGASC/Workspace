@@ -13,7 +13,6 @@ export class WordCounter extends Component {
     public static _observedAttributes = ['selector']
 
     static get observedAttributes() { return this._observedAttributes; }
-    static set observedAttributes(observedAttributes:string[]) { this._observedAttributes = observedAttributes; }
     static comment: string = `
     * WordCounter is used to count words in a HTML element.
     * observedAttributes:

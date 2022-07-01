@@ -16,6 +16,11 @@ logger.default.log("Hello world from default");
     //We wait page end loading
     await onDOMReady()
 
+    const btnList = document.querySelector("www-btn-list");
+    btnList?.attachListener((item)=>{
+        //Do something when item is clicked
+    })
+
     //Page is ready, we can fetch ur word counter component in the page and use count function which is a custom function that isn't exist on basic html element
     const counter = document.querySelector("www-word-counter");
     const count = counter?.count()
