@@ -9,9 +9,28 @@
     <script src="/index.js"></script>
 </head>
 <body>
-    <www-btn-list items='["test1","test2"]'></www-btn-list>
+    <!-- 
+        We create 3 buttons: play, pause and reset.  
+            - play: start to write the latin text on the page, letter by letter
+            - pause: stop to write the latin text on the page
+            - reset: restart the writing from the start with a new latin text (if on pause, stay on pause)
+    -->
+    <www-btn-list items='["Play","Pause","Reset"]'></www-btn-list>
 
-    <div id="hello">Hello, here an example of component: "wordCounter" -> <br></div>
-    <www-word-counter selector="#hello"></www-word-counter>
+    <!-- 
+        We create ur text cascade which will write text letter by letter with 10ms between each character.
+        The text property is set in js because the text is randomly generated
+    -->
+    <www-text-cascade text="" speed="10"></www-text-cascade>
+
+    <!-- 
+        We create a word counter which will observe the text content of the selected element
+    -->
+    <www-word-counter selector="www-text-cascade"></www-word-counter>
+
+    <!-- 
+        We create a 2D table which will contain in the first column used words, and in the second column occurences.
+    -->
+    <www-twod-table></www-twod-table>
 </body>
 </html>

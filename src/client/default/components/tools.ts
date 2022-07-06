@@ -4,6 +4,17 @@ import { strToHtml } from "../helpers/DOM";
 
 export class Component extends HTMLElement{
     static comment: string = `Not commented`
+    static conf:{
+        warnMissingListenerFunction?: boolean,
+        logActiveComponents?:boolean,
+        logComponentsComment?:boolean,
+        logCalledListenerFunction?: boolean
+    } = {
+        warnMissingListenerFunction: true,
+        logActiveComponents: true,
+        logComponentsComment: true,
+        logCalledListenerFunction: true
+    }
     
     static loggers:{[name:string]:Loggable} = {}
     static instances: {name:string, component:Component}[] = []
@@ -26,12 +37,17 @@ export class Component extends HTMLElement{
     static init(logger: Loggable, name:string){
         window.customElements.define(name, this);
         this.loggers[name.toLowerCase()] = logger;
-        this.loggers[name.toLowerCase()].info("init: ",name,"\n", "----","\n",this.comment,"\n","----")
+        if(Component.conf.logComponentsComment) this.loggers[name.toLowerCase()].info("init: ",name,"\n", "----","\n",this.comment,"\n","----")
     }
 
     attributeChangedCallback(name: string, oldValue: any, newValue: any) {
-        this.logger?.log("exec function on" + capitalizeFirstLetter(name).replace("-", "") + `(${oldValue}, ${newValue})`);
-        (this as any)["on" + capitalizeFirstLetter(name).replace("-", "")](oldValue, newValue);
+        if((this as any)["on" + capitalizeFirstLetter(name).replace("-", "")]){
+            if(Component.conf.logCalledListenerFunction) this.logger?.log("exec function on" + capitalizeFirstLetter(name).replace("-", "") + `(${oldValue}, ${newValue})`);
+            (this as any)["on" + capitalizeFirstLetter(name).replace("-", "")](oldValue, newValue);
+        }else{
+            if(Component.conf.warnMissingListenerFunction) this.logger?.warn("can't exec function on" + capitalizeFirstLetter(name).replace("-", ""), "because it doesn't exist");
+        }
+
     }
 
     onCss(oldValue: any, newValue: any) {

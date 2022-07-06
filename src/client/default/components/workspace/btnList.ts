@@ -8,7 +8,7 @@ import { Component } from '../tools';
  * - items: a json of an array of strings which will create multiple buttons with the given strings as text
  */
 export class BtnList extends Component {
-    public static _observedAttributes = ['items', 'title']
+    public static _observedAttributes = ['items']
 
     static get observedAttributes() { return this._observedAttributes; }
     static comment: string = `
@@ -17,7 +17,6 @@ export class BtnList extends Component {
     * - items: a json of an array of strings which will create multiple buttons with the given strings as text
     `;
 
-    observedElement: HTMLElement | undefined;
     listener: ((item:string) => any) | undefined
 
     constructor() {
@@ -54,7 +53,7 @@ export class BtnList extends Component {
         btns.forEach((btn)=>{
             btn.addEventListener("click", ()=>{
                 if(this.listener) {
-                    this.logger?.log(btn.innerText, "has been clicked")
+                    this.logger?.log("button \"" + btn.innerText + "\"", "has been clicked")
                     this.listener(btn.innerText);
                 }
             });

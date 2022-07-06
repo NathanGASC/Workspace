@@ -19,7 +19,8 @@ export class WordCounter extends Component {
     * - selector: css selector which is counted by the counter
     `;
 
-    observedElement: HTMLElement | undefined;
+    observedElement: HTMLElement | ShadowRoot | undefined;
+    mutationObserver: MutationObserver | undefined
 
     constructor() {
         super(view, css);
@@ -27,7 +28,7 @@ export class WordCounter extends Component {
 
     onSelector(oldValue: any, newValue: any) {
         if (typeof newValue != "string") throw new TypeError()
-        this.observedElement?.removeEventListener("DOMSubtreeModified", this.updateView.bind(this))
+        this.mutationObserver?.disconnect();
 
         let observedElement;
         try{
@@ -40,12 +41,14 @@ export class WordCounter extends Component {
             this.logger?.error(`The given selector "${newValue}" don't point on an existing element`)
             throw e;
         }
+        this.logger?.log(`Selector ${newValue} point on`, observedElement);
 
         
-        this.observedElement = observedElement;
+        this.observedElement = observedElement.shadowRoot ? observedElement.shadowRoot : observedElement;
         this.updateView();
 
-        this.observedElement?.addEventListener("DOMSubtreeModified", this.updateView.bind(this))
+        this.mutationObserver = new MutationObserver(this.updateView.bind(this));
+        this.mutationObserver.observe(this.observedElement, {"subtree": true, "childList":true, "characterData":true})
     }
 
     count() {
