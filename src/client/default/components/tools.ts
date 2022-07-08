@@ -9,11 +9,13 @@ export class Component extends HTMLElement{
         logActiveComponents?:boolean,
         logComponentsComment?:boolean,
         logCalledListenerFunction?: boolean
+        logDependenciesCustomElement?: boolean
     } = {
         warnMissingListenerFunction: true,
         logActiveComponents: true,
         logComponentsComment: true,
-        logCalledListenerFunction: true
+        logCalledListenerFunction: true,
+        logDependenciesCustomElement: false
     }
     
     static loggers:{[name:string]:Loggable} = {}

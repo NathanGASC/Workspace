@@ -51,6 +51,10 @@ export class WordCounter extends Component {
         this.mutationObserver.observe(this.observedElement, {"subtree": true, "childList":true, "characterData":true})
     }
 
+    /**
+     * Give the count of word & letter
+     * @returns an object containing the count
+     */
     count() {
         if (!this.observedElement) return { words: 0, characters: 0 };
         const text = this.observedElement.textContent || "";
@@ -65,7 +69,7 @@ export class WordCounter extends Component {
         }
     }
 
-    updateView() {
+    private updateView() {
         const words = this.shadowRoot!.querySelector("#wordsCount")
         const characters = this.shadowRoot!.querySelector("#charactersCount")
         if (!words || !characters) throw new Error("DOM Error");

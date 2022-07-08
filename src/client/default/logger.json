@@ -16,20 +16,8 @@
         "api": {
             "isLogged": true
         },
-        "www-word-counter": {
-            "isLogged":true
-        },
-        "components": {
-            "isLogged":true
-        },
-        "www-btn-list": {
-            "isLogged":true
-        },
-        "www-text-cascade":{
-            "isLogged":true
-        },
         "www-twod-table":{
-            "isLogged":true
+            "isLogged": false
         }
     }
 }

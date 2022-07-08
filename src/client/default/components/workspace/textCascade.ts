@@ -5,6 +5,9 @@ import { Component } from '../tools';
  * observedAttributes:
  * - text: the text to display in cascade
  * - speed: the cascade speed in ms (by default 10)
+ * 
+ * Note:
+ * To permit dynamic writing, we don't reset the text on text change if the text from the start to the current display letter isn't different
  */
 export class TextCascade extends Component {
     public static _observedAttributes = ['text', 'speed']
@@ -15,6 +18,9 @@ export class TextCascade extends Component {
     * observedAttributes:
     * - text: the text to display in cascade
     * - speed: the cascade speed in ms (by default 10)
+    * 
+    * Note:
+    * To permit dynamic writing, we don't reset the text on text change if the text from the start to the current display letter isn't different
     `;
 
     cursor:number = 0;
@@ -34,11 +40,17 @@ export class TextCascade extends Component {
         }
     }
 
+    /**
+     * Pause the text cascade
+     */
     pause(){
         this.status = "pause"
         if(this.intervalId) clearInterval(this.intervalId);
     }
 
+    /**
+     * Start or restart the text cascade
+     */
     play(){
         this.status = "play"
         if(this.intervalId) clearInterval(this.intervalId);

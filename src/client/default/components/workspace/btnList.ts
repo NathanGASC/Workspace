@@ -60,6 +60,10 @@ export class BtnList extends Component {
         })
     }
 
+    /**
+     * The callback passed to this method will be called on button click. The callback will have as parameter the button text
+     * @param listener 
+     */
     attachListener(listener: (item:string)=>any){
         this.listener = listener;
     }

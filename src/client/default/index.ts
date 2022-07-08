@@ -1,7 +1,5 @@
 import { createLogger } from "@nathangasc/fox_logger";
-import { json } from "stream/consumers";
 import { componentsInit } from "./components/components";
-import { Component } from "./components/tools";
 import { loremIpsum } from "./helpers/any";
 import { onDOMReady } from "./helpers/DOM";
 import logConfig from "./logger.json";
@@ -10,22 +8,23 @@ import logConfig from "./logger.json";
 export const logger = createLogger(logConfig);
 
 //We init ur components (we pass ur logger which is used by ur components to logs. That's why configuration should have a namespace foreach components)
-componentsInit(logger, {
-    "logActiveComponents":true,
-    "logComponentsComment": true,
-    "warnMissingListenerFunction": true,
-    "logCalledListenerFunction": true
+componentsInit(logConfig, {
+    "logActiveComponents":true, //Tell if we must log the active components at the start
+    "logComponentsComment": true, //Tell if we must log component documentation
+    "warnMissingListenerFunction": true, //Tell if we must warn when a function is triggerd on property change but don't exist in the custom element
+    "logCalledListenerFunction": true, //Tell if we must log when a function is triggered by a property change,
+    "logDependenciesCustomElement": true //Tell if we must log informations about used custom element dependencies
 });
 
 (async () => {
     //We wait page end loading
     await onDOMReady()
     const textCascade = document.querySelector("www-text-cascade");
-    const twodTable = document.querySelector("www-twod-table");
-    const btnList = document.querySelector("www-btn-list");
+    const paginableTable = document.querySelector("www-paginable-table");
+    const btnLists = document.querySelectorAll("www-btn-list");
     
-    btnList?.attachListener((item)=>{
-        //Do something when item is clicked
+    btnLists[0]?.attachListener((item)=>{
+        //Do something when item is clicked. Item have the text value of the clicked button
         switch (item) {
             case "Play":
                 textCascade?.play()
@@ -34,8 +33,24 @@ componentsInit(logger, {
                 textCascade?.pause()
                 break;
             case "Reset":
+                //we generate a new text
                 textCascade?.setAttribute("text",loremIpsum(500))
+                paginableTable?.setAttribute("page", "0")
                 updateObjectTable()
+                break;
+            default:
+                break;
+        }
+    })
+
+    btnLists[1]?.attachListener((item)=>{
+        //Do something when item is clicked. Item have the text value of the clicked button
+        switch (item) {
+            case "Next":
+                paginableTable?.next();
+                break;
+            case "Previous":
+                paginableTable?.previous();
                 break;
             default:
                 break;
@@ -45,28 +60,46 @@ componentsInit(logger, {
     textCascade?.setAttribute("text",loremIpsum(500))
     updateObjectTable()
 
-    
+    //we observe ur text and call update table each time the DOM change (for example adding a letter will trigger the function)
     const observedElement = textCascade!.shadowRoot!;
     const mutationObserver = new MutationObserver(updateObjectTable);
     mutationObserver.observe(observedElement, {"subtree": true, "childList":true, "characterData":true})
 
+    //Transform the text in a 3D table and put it in paginableTable element's object attribute
     function updateObjectTable(){
+        //Transform the text in a 3D table with words & occurences. (3D because the table have pagination)
         const text = textCascade?.shadowRoot?.textContent
         const aText = text?.split(" ");
-        const jsonObject:(string|number)[][] = [
-            ["words", "occurences"]
+        const jsonObject:(string|number)[][][] = [
+            [
+                ["words", "occurences"]
+            ]
         ]
 
         aText?.forEach(word => {
-            const existIndex = jsonObject.findIndex((t)=>{return t[0] == word})
-            if(existIndex != -1) {
-                jsonObject[existIndex] = [word, (jsonObject[existIndex][1] as number)+1]
+            let pageIndex = -1;
+            let wordIndex = -1;
+            jsonObject.forEach((page,i)=>{
+                wordIndex = page.findIndex((row)=>{return row[0] == word})
+                if(wordIndex != -1){
+                    pageIndex = i;
+                }
+            })
+
+            if(wordIndex != -1) {
+                jsonObject[pageIndex][wordIndex] = [word, (jsonObject[pageIndex][wordIndex][1] as number)+1]
             }
             else{
-                jsonObject.push([word, 1])
+                if(jsonObject[jsonObject.length-1].length == 10){
+                    jsonObject[jsonObject.length] = [
+                        ["words", "occurences"]
+                    ];
+                }
+                jsonObject[jsonObject.length-1].push([word, 1])
             }
         });
 
-        twodTable?.setAttribute("object", JSON.stringify(jsonObject))
+        //Asign the 2D table to ur twodTable element
+        paginableTable?.setAttribute("object", JSON.stringify(jsonObject))
     }
 })()
