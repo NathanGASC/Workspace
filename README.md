@@ -26,5 +26,51 @@ ENV=prod
 CLIENT=hello
 ```
 
+## Components
+For front-end dev there is a components system based on custom element native system with some addition. You will find everything about them under ./src/default/components.
+
+### Create a components
+Create a file under ./src/client/default/components/custom. This file must have the name of your component and inside you should write a class which extends "Component" class. Once it's done, you must add this class in _myList.ts file.
+
+### Debug
+To debug your components and be sure it's active, look at the logs in your console. You should be able to see informations about your component.
+
+### Logs
+By default, every components will have a logger in the Component class context. You can use it like this `this.logger.log("helloWorld!")`.
+If you want to control your logs more, for example changing the way they are displayed or if they are displayed, you have a few solutions. 
+
+In the function "initComponents" you can pass 2 parameters. The first one use fox_logger module. You can find his documentation here : https://www.npmjs.com/package/@nathangasc/fox_logger. The idea is to give the log configuration usually passed to "createLogger" function to "initComponents" as first parameter. The second parameter is to control which type of logs are displayed. You will end up with something like that: 
+
+```ts
+componentsInit({ 
+    "namespaces": { 
+        "default": { 
+            "isLogged": true
+        },
+        "www-word-counter": {
+            "isLogged": false
+        }
+    },
+    "options":{
+        "format": "",
+        "isLogged":{
+            "debug": true,
+            "error": true,
+            "info": true,
+            "log": true,
+            "warn": true,
+        }
+    }
+}, {
+    "logActiveComponents": true,
+    "logCalledListenerFunction": false,
+    "logComponentsComment": true,
+    "logDependenciesCustomElement": false,
+    "warnMissingListenerFunction": false
+});
+```
+
+but if you don't care about logs, you can simpely do that : `componentsInit()`
+
 ## Pipeline
 - Release : Will build your project and create a release each time you push on release branch. The release name will be : "release YYYY-MM-DD"
